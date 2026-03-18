@@ -1,0 +1,19 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: TerraformInstaller@1
+    inputs:
+      terraformVersion: '1.6.5'
+
+  - script: |
+      terraform init infra
+      terraform plan -out=tfplan
+    displayName: 'Terraform Init & Plan'
+
+  - script: |
+      terraform apply -auto-approve tfplan
+    displayName: 'Terraform Apply'
