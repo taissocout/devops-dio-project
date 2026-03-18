@@ -1,0 +1,23 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Instalar Node.js'
+
+- script: npm install
+  displayName: 'Instalar dependências'
+
+- script: |
+    npm start &
+    sleep 5
+    curl http://localhost:3000/health
+  displayName: 'Testar API'
+
+- script: echo "🚀 Pipeline executado com sucesso"
+  displayName: 'Final'
